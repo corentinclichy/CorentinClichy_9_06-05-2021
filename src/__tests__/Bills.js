@@ -19,7 +19,6 @@ describe("Given I am connected as an employee", () => {
         .map((a) => a.innerHTML);
       const antiChrono = (a, b) => b - a;
 
-      console.log(antiChrono);
       const datesSorted = [...dates].sort(antiChrono);
       expect(dates).toEqual(datesSorted);
     });
