@@ -59,7 +59,7 @@ export default class NewBill {
     } else {
       e.target.value = "";
       console.log(errorMessage);
-      errorMessage.innerHTML = "Fichier JPG ou PNG uniquement";
+      errorMessage.innerHTML = "Fichier JPG, JPEG ou PNG uniquement";
     }
   };
   handleSubmit = (e) => {

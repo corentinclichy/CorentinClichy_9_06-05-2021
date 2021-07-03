@@ -16,6 +16,7 @@ export const filteredBills = (data, status) => {
         } else {
           // in prod environment
           const userEmail = JSON.parse(localStorage.getItem("user")).email;
+
           selectCondition =
             bill.status === status &&
             [...USERS_TEST, userEmail].includes(bill.email);
@@ -75,16 +76,19 @@ export default class {
     this.document = document;
     this.onNavigate = onNavigate;
     this.firestore = firestore;
-    $("#arrow-icon1").click((e) => this.handleShowTickets(e, bills, 1));
+    $("#arrow-icon1").click((e) => {
+      console.log(e);
+      return this.handleShowTickets(e, bills, 1);
+    });
     $("#arrow-icon2").click((e) => this.handleShowTickets(e, bills, 2));
     $("#arrow-icon3").click((e) => this.handleShowTickets(e, bills, 3));
     this.getBillsAllUsers();
     new Logout({ localStorage, onNavigate });
+    this.isNotVisible = { 1: true, 2: true, 3: true };
   }
 
   handleClickIconEye = () => {
     const billUrl = $("#icon-eye-d").attr("data-bill-url");
-    console.log(billUrl);
     const imgWidth = Math.floor($("#modaleFileAdmin1").width() * 0.8);
     $("#modaleFileAdmin1")
       .find(".modal-body")
@@ -96,25 +100,14 @@ export default class {
   };
 
   handleEditTicket(e, bill, bills) {
-    if (this.counter === undefined || this.id !== bill.id) this.counter = 0;
-    if (this.id === undefined || this.id !== bill.id) this.id = bill.id;
-    if (this.counter % 2 === 0) {
-      bills.forEach((b) => {
-        $(`#open-bill${b.id}`).css({ background: "#0D5AE5" });
-      });
-      $(`#open-bill${bill.id}`).css({ background: "#2A2B35" });
-      $(".dashboard-right-container div").html(DashboardFormUI(bill));
-      $(".vertical-navbar").css({ height: "150vh" });
-      this.counter++;
-    } else {
+    bills.forEach((bill) => {
       $(`#open-bill${bill.id}`).css({ background: "#0D5AE5" });
+    });
+    $(`#open-bill${bill.id}`).css({ background: "#2A2B35" });
 
-      $(".dashboard-right-container div").html(`
-        <div id="big-billed-icon"> ${BigBilledIcon} </div>
-      `);
-      $(".vertical-navbar").css({ height: "120vh" });
-      this.counter++;
-    }
+    $(".dashboard-right-container div").html(DashboardFormUI(bill));
+    $(".vertical-navbar").css({ height: "150vh" });
+
     $("#icon-eye-d").click(this.handleClickIconEye);
     $("#btn-accept-bill").click((e) => this.handleAcceptSubmit(e, bill));
     $("#btn-refuse-bill").click((e) => this.handleRefuseSubmit(e, bill));
@@ -141,24 +134,25 @@ export default class {
   };
 
   handleShowTickets(e, bills, index) {
-    if (this.counter === undefined || this.index !== index) this.counter = 0;
-    if (this.index === undefined || this.index !== index) this.index = index;
-    if (this.counter % 2 === 0) {
-      $(`#arrow-icon${this.index}`).css({ transform: "rotate(0deg)" });
-      $(`#status-bills-container${this.index}`).html(
-        cards(filteredBills(bills, getStatus(this.index)))
+    //logic to open/close panels
+    this.isNotVisible[index] === true
+      ? (this.isNotVisible[index] = false)
+      : (this.isNotVisible[index] = true);
+
+    if (this.isNotVisible[index] === false) {
+      $(`#arrow-icon${index}`).css({ transform: "rotate(0deg)" });
+      $(`#status-bills-container${index}`).html(
+        cards(filteredBills(bills, getStatus(index)))
       );
-      this.counter++;
     } else {
-      $(`#arrow-icon${this.index}`).css({ transform: "rotate(90deg)" });
-      $(`#status-bills-container${this.index}`).html("");
-      this.counter++;
+      $(`#arrow-icon${index}`).css({ transform: "rotate(90deg)" });
+      $(`#status-bills-container${index}`).html("");
     }
 
     bills.forEach((bill) => {
-      $(`#open-bill${bill.id}`).click((e) =>
-        this.handleEditTicket(e, bill, bills)
-      );
+      $(`#open-bill${bill.id}`).click((e) => {
+        return this.handleEditTicket(e, bill, bills);
+      });
     });
 
     return bills;

@@ -25,7 +25,6 @@ export default class Login {
       `form[data-testid="form-admin"]`
     );
     formAdmin.addEventListener("submit", this.handleSubmitAdmin);
-    console.log("heyyy");
   }
 
   handleSubmitEmployee = (e) => {
