@@ -6,7 +6,7 @@ import Actions from "./Actions.js";
 
 const row = (bill) => {
   return `
-    <tr>
+    <tr data-testid="bill-item">
       <td>${bill.type}</td>
       <td>${bill.name}</td>
       <td>${bill.date}</td>

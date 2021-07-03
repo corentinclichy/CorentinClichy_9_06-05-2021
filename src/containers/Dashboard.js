@@ -139,6 +139,7 @@ export default class {
       ? (this.isNotVisible[index] = false)
       : (this.isNotVisible[index] = true);
 
+    // display/hide bill correctly if panel is open/close
     if (this.isNotVisible[index] === false) {
       $(`#arrow-icon${index}`).css({ transform: "rotate(0deg)" });
       $(`#status-bills-container${index}`).html(
@@ -154,6 +155,18 @@ export default class {
         return this.handleEditTicket(e, bill, bills);
       });
     });
+
+    //do show bill if all panels are closed
+    if (
+      this.isNotVisible[1] &&
+      this.isNotVisible[2] &&
+      this.isNotVisible[3] === true
+    ) {
+      $(".dashboard-right-container div").html(`
+        <div id="big-billed-icon"> ${BigBilledIcon} </div>
+      `);
+      $(".vertical-navbar").css({ height: "120vh" });
+    }
 
     return bills;
   }
