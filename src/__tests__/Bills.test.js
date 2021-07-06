@@ -46,136 +46,135 @@ describe("Given I am connected as an employee", () => {
       const datesSorted = [...dates].sort(antiChrono);
       expect(dates).toEqual(datesSorted);
     });
+  });
+});
 
-    describe("When data is loading", () => {
-      test("Then, Sould render loading page", () => {
-        // logged user
-        Object.defineProperty(window, "localStorage", {
-          value: localStorageMock,
-        });
-        window.localStorage.setItem(
-          "user",
-          JSON.stringify({ type: "Employee" })
-        );
-
-        const html = BillsUI({ loading: true });
-        document.body.innerHTML = html;
-
-        const loadingMessage = screen.getByText("Loading...");
-
-        expect(loadingMessage).toBeTruthy();
+describe("Given I am connected as an employee and I am on Bills page", () => {
+  describe("When data is loading", () => {
+    test("Then, Sould render loading page", () => {
+      // logged user
+      Object.defineProperty(window, "localStorage", {
+        value: localStorageMock,
       });
+      window.localStorage.setItem("user", JSON.stringify({ type: "Employee" }));
+
+      const html = BillsUI({ loading: true });
+      document.body.innerHTML = html;
+
+      const loadingMessage = screen.getByText("Loading...");
+
+      expect(loadingMessage).toBeTruthy();
     });
-
-    describe("When back-end send an error message", () => {
-      test("Then, Error page should be rendered", () => {
-        const html = BillsUI({ error: "some error message" });
-        document.body.innerHTML = html;
-        expect(screen.getAllByText("Erreur")).toBeTruthy();
-      });
+  });
+});
+describe("Given I am connected as an employee and I am on Bills page", () => {
+  describe("When back-end send an error message", () => {
+    test("Then, Error page should be rendered", () => {
+      const html = BillsUI({ error: "some error message" });
+      document.body.innerHTML = html;
+      expect(screen.getAllByText("Erreur")).toBeTruthy();
     });
-
-    describe("When user don't have saved any bills", () => {
-      test("Then the bills list should be empty", () => {
-        // logged user
-        Object.defineProperty(window, "localStorage", {
-          value: localStorageMock,
-        });
-        window.localStorage.setItem(
-          "user",
-          JSON.stringify({ type: "Employee" })
-        );
-
-        const html = BillsUI({ data: [] });
-        document.body.innerHTML = html;
-
-        const bills = screen.queryByTestId("bill-item");
-
-        expect(bills).toBeNull();
+  });
+});
+describe("Given I am connected as an employee and I am on Bills page", () => {
+  describe("When user don't have saved any bills", () => {
+    test("Then the bills list should be empty", () => {
+      // logged user
+      Object.defineProperty(window, "localStorage", {
+        value: localStorageMock,
       });
+      window.localStorage.setItem("user", JSON.stringify({ type: "Employee" }));
+
+      const html = BillsUI({ data: [] });
+      document.body.innerHTML = html;
+
+      const bills = screen.queryByTestId("bill-item");
+
+      expect(bills).toBeNull();
     });
+  });
+});
 
-    describe("When I click new bill button", () => {
-      test("Then, new bills UI render", () => {
-        // logged user
-        Object.defineProperty(window, "localStorage", {
-          value: localStorageMock,
-        });
-        window.localStorage.setItem(
-          "user",
-          JSON.stringify({ type: "Employee" })
-        );
-
-        const html = BillsUI({ data: [] });
-        document.body.innerHTML = html;
-
-        const onNavigate = (pathname) => {
-          document.body.innerHTML = ROUTES({ pathname });
-        };
-
-        const firestore = null;
-        const localStorage = window.localStorage;
-
-        const billsController = new Bills({
-          document,
-          onNavigate,
-          firestore,
-          localStorage,
-        });
-
-        const handleClickNewBills = jest.fn(() => {
-          billsController.handleClickNewBill();
-        });
-
-        const newBillButton = screen.getByTestId("btn-new-bill");
-        newBillButton.addEventListener("click", handleClickNewBills);
-
-        fireEvent.click(newBillButton);
-
-        const newBillUITitle = screen.getByTestId("form-new-bill");
-
-        expect(newBillUITitle).toBeTruthy();
+describe("Given I am connected as an employee and I am on the Bills page", () => {
+  describe("When I click new bill button", () => {
+    test("Then, new bills UI render", () => {
+      // logged user
+      Object.defineProperty(window, "localStorage", {
+        value: localStorageMock,
       });
+      window.localStorage.setItem("user", JSON.stringify({ type: "Employee" }));
+
+      const html = BillsUI({ data: [] });
+      document.body.innerHTML = html;
+
+      const onNavigate = (pathname) => {
+        document.body.innerHTML = ROUTES({ pathname });
+      };
+
+      const firestore = null;
+      const localStorage = window.localStorage;
+
+      const billsController = new Bills({
+        document,
+        onNavigate,
+        firestore,
+        localStorage,
+      });
+
+      const handleClickNewBills = jest.fn(() => {
+        billsController.handleClickNewBill();
+      });
+
+      const newBillButton = screen.getByTestId("btn-new-bill");
+      newBillButton.addEventListener("click", handleClickNewBills);
+
+      fireEvent.click(newBillButton);
+
+      const newBillUITitle = screen.getByTestId("form-new-bill");
+
+      expect(newBillUITitle).toBeTruthy();
     });
-    describe("When I click on icon-eye button ", () => {
-      test("Then modal should open", () => {
-        Object.defineProperty(window, "localStorage", {
-          value: localStorageMock,
-        });
-        window.localStorage.setItem(
-          "user",
-          JSON.stringify({ type: "Employee" })
-        );
+  });
+});
 
-        const html = BillsUI({ data: [bills[1]] });
-        document.body.innerHTML = html;
-
-        const onNavigate = (pathname) => {
-          document.body.innerHTML = ROUTES({ pathname });
-        };
-
-        const firestore = null;
-        const localStorage = window.localStorage;
-
-        const billsController = new Bills({
-          document,
-          onNavigate,
-          firestore,
-          localStorage,
-        });
-
-        const handleClickIconEye = jest.fn(billsController.handleClickIconEye);
-        const iconEyeButton = screen.getByTestId("icon-eye");
-
-        iconEyeButton.addEventListener("click", handleClickIconEye);
-
-        userEvent.click(iconEyeButton);
-
-        expect(handleClickIconEye).toHaveBeenCalled();
-        const modale = screen.getByTestId("modaleFile");
-
-        expect(modale).toBeTruthy();
+describe("Given I am connected as an employee and I am on the Bills page", () => {
+  describe("When I click on icon-eye button ", () => {
+    test("Then modal should open", () => {
+      Object.defineProperty(window, "localStorage", {
+        value: localStorageMock,
       });
+      window.localStorage.setItem("user", JSON.stringify({ type: "Employee" }));
+
+      const html = BillsUI({ data: [bills[1]] });
+      document.body.innerHTML = html;
+
+      const onNavigate = (pathname) => {
+        document.body.innerHTML = ROUTES({ pathname });
+      };
+
+      const firestore = null;
+      const localStorage = window.localStorage;
+
+      const billsController = new Bills({
+        document,
+        onNavigate,
+        firestore,
+        localStorage,
+      });
+
+      $.fn.modal = jest.fn();
+      const handleClickIconEye = jest.fn(billsController.handleClickIconEye);
+      const iconEyeButton = screen.getByTestId("icon-eye");
+
+      iconEyeButton.addEventListener("click", handleClickIconEye);
+
+      userEvent.click(iconEyeButton);
+
+      expect(handleClickIconEye).toHaveBeenCalled();
+      expect($.fn.modal).toHaveBeenCalled();
+      const modale = screen.getByTestId("modaleFile");
+
+      expect(modale).toBeTruthy();
     });
   });
 });

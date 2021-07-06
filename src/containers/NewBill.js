@@ -20,20 +20,15 @@ export default class NewBill {
   handleChangeFile = (e) => {
     const file = this.document.querySelector(`input[data-testid="file"]`)
       .files[0];
-    console.log(file);
 
     const filePath = file.name.split(/\\/g);
-    console.log(filePath);
 
     const fileName = filePath[filePath.length - 1];
-    console.log(fileName);
 
     const fileNameSplit = fileName.split(".");
-    console.log(fileNameSplit);
 
     //Get the extension name - get the last element of fileNameSplit
     const fileExtension = fileNameSplit.slice(-1)[0];
-    console.log(fileExtension);
 
     const errorMessage = this.document.querySelector(
       'p[data-testid="error-extension"]'
@@ -58,16 +53,11 @@ export default class NewBill {
         });
     } else {
       e.target.value = "";
-      console.log(errorMessage);
       errorMessage.innerHTML = "Fichier JPG, JPEG ou PNG uniquement";
     }
   };
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log(
-      'e.target.querySelector(`input[data-testid="datepicker"]`).value',
-      e.target.querySelector(`input[data-testid="datepicker"]`).value
-    );
     const email = JSON.parse(localStorage.getItem("user")).email;
     const bill = {
       email,
@@ -87,11 +77,13 @@ export default class NewBill {
       fileName: this.fileName,
       status: "pending",
     };
+
     this.createBill(bill);
     this.onNavigate(ROUTES_PATH["Bills"]);
   };
 
   // not need to cover this function by tests
+  /* istanbul ignore next  */
   createBill = (bill) => {
     if (this.firestore) {
       this.firestore
