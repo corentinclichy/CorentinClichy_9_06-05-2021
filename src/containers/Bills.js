@@ -2,6 +2,8 @@ import { ROUTES_PATH } from "../constants/routes.js";
 import { formatDate, formatStatus } from "../app/format.js";
 import Logout from "./Logout.js";
 
+import { textToDate } from "../app/format.js";
+
 export default class {
   constructor({ document, onNavigate, firestore, localStorage }) {
     this.document = document;
@@ -25,7 +27,8 @@ export default class {
   };
 
   handleClickIconEye = (icon) => {
-    const billUrl = $("#icon-eye").attr("data-bill-url");
+    const billUrl = $("#eye").attr("data-bill-url");
+    console.log(billUrl);
     const imgWidth = Math.floor($("#modaleFile").width() * 0.5);
     $("#modaleFile")
       .find(".modal-body")
@@ -66,11 +69,34 @@ export default class {
                 };
               }
             })
-            .filter((bill) => bill.email === userEmail);
-          console.log("length", bills.length);
+            .filter((bill) => bill.email === userEmail)
+            .sort((bill1, bill2) => {
+              const date1 = textToDate(bill1.date);
+              const date2 = textToDate(bill2.date);
+
+              if (date1 <= date2) return 1;
+              if (date1 > date2) return -1;
+            });
+
+          console.log(bills);
+
           return bills;
         })
         .catch((error) => error);
     }
   };
 }
+
+export const sortBillsByDate = (bills) => {
+  const billsCopy = [...bills];
+
+  billsCopy.sort((bill1, bill2) => {
+    const date1 = convertToDate(bill1.date);
+    const date2 = convertToDate(bill2.date);
+
+    if (date1 <= date2) return 1;
+    if (date1 > date2) return -1;
+  });
+
+  return billsCopy;
+};

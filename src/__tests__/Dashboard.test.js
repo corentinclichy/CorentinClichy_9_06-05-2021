@@ -266,6 +266,7 @@ describe("Given I am connected as Admin and I am on Dashboard page and I clicked
         document.body.innerHTML = ROUTES({ pathname });
       };
       const firestore = null;
+
       const dashboard = new Dashboard({
         document,
         onNavigate,

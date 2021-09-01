@@ -71,7 +71,10 @@ const firebase = {
     });
   },
   post: async (bill) => {
+    // get the bill of the post method
     const bills = await firebase.get();
+
+    // add the new bill to the array
     return Promise.resolve({
       data: [
         ...bills.data,

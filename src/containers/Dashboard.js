@@ -16,7 +16,6 @@ export const filteredBills = (data, status) => {
         } else {
           // in prod environment
           const userEmail = JSON.parse(localStorage.getItem("user")).email;
-
           selectCondition =
             bill.status === status &&
             [...USERS_TEST, userEmail].includes(bill.email);
@@ -76,11 +75,14 @@ export default class {
     this.document = document;
     this.onNavigate = onNavigate;
     this.firestore = firestore;
+
     $("#arrow-icon1").click((e) => {
-      console.log(e);
       return this.handleShowTickets(e, bills, 1);
     });
-    $("#arrow-icon2").click((e) => this.handleShowTickets(e, bills, 2));
+    $("#arrow-icon2").click((e) => {
+      console.log(e);
+      return this.handleShowTickets(e, bills, 2);
+    });
     $("#arrow-icon3").click((e) => this.handleShowTickets(e, bills, 3));
     this.getBillsAllUsers();
     new Logout({ localStorage, onNavigate });
