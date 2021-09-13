@@ -35,7 +35,7 @@ export const card = (bill) => {
     ? firstAndLastNames.split(".")[1]
     : firstAndLastNames;
 
-  console.log(formatDate(bill.date));
+  console.log(bill.date);
 
   return `
     <div class='bill-card' id='open-bill${bill.id}' data-testid='open-bill${
@@ -50,7 +50,7 @@ export const card = (bill) => {
         <span> ${bill.amount} € </span>
       </div>
       <div class='date-type-container'>
-        <span> ${formatDate(bill.date)} </span>
+        <span> ${bill.date ? formatDate(bill.date) : ""}} </span>
         <span> ${bill.type} </span>
       </div>
     </div>
@@ -58,6 +58,7 @@ export const card = (bill) => {
 };
 
 export const cards = (bills) => {
+  console.log(bills);
   return bills && bills.length ? bills.map((bill) => card(bill)).join("") : "";
 };
 
