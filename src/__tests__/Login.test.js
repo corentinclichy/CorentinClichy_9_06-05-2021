@@ -210,16 +210,16 @@ describe("Given that I am a user on login page", () => {
       form.addEventListener("submit", handleSubmit);
       fireEvent.submit(form);
       expect(handleSubmit).toHaveBeenCalled();
-      // expect(window.localStorage.setItem).toHaveBeenCalled();
-      // expect(window.localStorage.setItem).toHaveBeenCalledWith(
-      //   "user",
-      //   JSON.stringify({
-      //     type: "Admin",
-      //     email: inputData.email,
-      //     password: inputData.password,
-      //     status: "connected",
-      //   })
-      // );
+      expect(window.localStorage.setItem).toHaveBeenCalled();
+      expect(window.localStorage.setItem).toHaveBeenCalledWith(
+        "user",
+        JSON.stringify({
+          type: "Admin",
+          email: inputData.email,
+          password: inputData.password,
+          status: "connected",
+        })
+      );
     });
 
     test("It should renders HR dashboard page", () => {

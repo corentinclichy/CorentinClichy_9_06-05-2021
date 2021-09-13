@@ -35,6 +35,8 @@ export const card = (bill) => {
     ? firstAndLastNames.split(".")[1]
     : firstAndLastNames;
 
+  console.log(formatDate(bill.date));
+
   return `
     <div class='bill-card' id='open-bill${bill.id}' data-testid='open-bill${
     bill.id

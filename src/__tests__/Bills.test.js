@@ -162,7 +162,6 @@ describe("Given I am connected as an employee and I am on the Bills page", () =>
         localStorage,
       });
 
-      $.fn.modal = jest.fn();
       const handleClickIconEye = jest.fn(billsController.handleClickIconEye);
       const iconEyeButton = screen.getByTestId("icon-eye");
 
@@ -171,7 +170,6 @@ describe("Given I am connected as an employee and I am on the Bills page", () =>
       userEvent.click(iconEyeButton);
 
       expect(handleClickIconEye).toHaveBeenCalled();
-      expect($.fn.modal).toHaveBeenCalled();
       const modale = screen.getByTestId("modaleFile");
 
       expect(modale).toBeTruthy();

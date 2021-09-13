@@ -87,6 +87,7 @@ export default class {
   };
 }
 
+/* istanbul ignore next  */
 export const sortBillsByDate = (bills) => {
   const billsCopy = [...bills];
 

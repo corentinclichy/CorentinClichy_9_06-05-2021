@@ -25,9 +25,9 @@ export const formatDate = (dateStr) => {
 export const textToDate = (formatedDate) => {
   let [day, month, year] = formatedDate.split(" ");
 
-  year = parseInt(year);
+  year = +year;
   month = MONTHS[month];
-  day = parseInt(day);
+  day = +day;
 
   return new Date(year, month, day);
 };

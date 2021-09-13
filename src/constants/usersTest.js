@@ -3,5 +3,4 @@ export default [
   "christian.saluzzo@billed.com",
   "jean.limbert@billed.com",
   "joanna.binet@billed.com",
-  "corentin@billed.com",
 ];
