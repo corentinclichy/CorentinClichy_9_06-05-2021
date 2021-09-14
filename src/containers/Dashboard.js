@@ -35,8 +35,6 @@ export const card = (bill) => {
     ? firstAndLastNames.split(".")[1]
     : firstAndLastNames;
 
-  console.log(bill.date);
-
   return `
     <div class='bill-card' id='open-bill${bill.id}' data-testid='open-bill${
     bill.id
@@ -58,7 +56,6 @@ export const card = (bill) => {
 };
 
 export const cards = (bills) => {
-  console.log(bills);
   return bills && bills.length ? bills.map((bill) => card(bill)).join("") : "";
 };
 
@@ -83,10 +80,10 @@ export default class {
       return this.handleShowTickets(e, bills, 1);
     });
     $("#arrow-icon2").click((e) => {
-      console.log(e);
       return this.handleShowTickets(e, bills, 2);
     });
     $("#arrow-icon3").click((e) => this.handleShowTickets(e, bills, 3));
+
     this.getBillsAllUsers();
     new Logout({ localStorage, onNavigate });
     this.isNotVisible = { 1: true, 2: true, 3: true };

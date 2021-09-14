@@ -71,14 +71,9 @@ export default class {
             })
             .filter((bill) => bill.email === userEmail)
             .sort((bill1, bill2) => {
-              const date1 = textToDate(bill1.date);
-              const date2 = textToDate(bill2.date);
-
-              if (date1 <= date2) return 1;
-              if (date1 > date2) return -1;
+              // Sort by date descending
+              return textToDate(bill2.date) - textToDate(bill1.date);
             });
-
-          console.log(bills);
 
           return bills;
         })

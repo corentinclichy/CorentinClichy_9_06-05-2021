@@ -10,6 +10,8 @@ import Firestore from "../app/Firestore";
 import firebase from "../__mocks__/firebase";
 import userEvent from "@testing-library/user-event";
 
+import { errorPage404, errorPage500 } from "../__mocks__/ErrorPage";
+
 describe("Given I am connected as an employee", () => {
   describe("When I am on Bills Page", () => {
     test("Then bill icon in vertical layout should be highlighted", () => {
@@ -187,18 +189,15 @@ describe("Given I am a user connected as Employee", () => {
       expect(bills.data.length).toBe(4);
     });
     test("fetches bills from an API and fails with 404 message error", async () => {
-      firebase.get.mockImplementationOnce(() =>
-        Promise.reject(new Error("Erreur 404"))
-      );
+      errorPage404();
       const html = BillsUI({ error: "Erreur 404" });
       document.body.innerHTML = html;
       const message = await screen.getByText(/Erreur 404/);
       expect(message).toBeTruthy();
     });
     test("fetches messages from an API and fails with 500 message error", async () => {
-      firebase.get.mockImplementationOnce(() =>
-        Promise.reject(new Error("Erreur 500"))
-      );
+      // Passer les mocck 404 et 500 dans le dossier mock et importer dans les tests
+      errorPage500();
       const html = BillsUI({ error: "Erreur 500" });
       document.body.innerHTML = html;
       const message = await screen.getByText(/Erreur 500/);
